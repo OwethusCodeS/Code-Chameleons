@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Container */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .sidebar img {
+            width: 100%;
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            padding: 15px;
+            margin-bottom: 5px;
+            background-color: #4c4c4c;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .sidebar li:hover {
+            background-color: #b30000;
+        }
+
+        .sidebar li.active {
+            background-color: #b30000;
+        }
+
+        .sidebar li img {
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color:  #b30000;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .topbar .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar .admin-info img {
+            width: 30px;
+        }
+
+        .carousel {
+            margin-top: 20px;
+            background-color: #e6e6e6;
+            padding: 30px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 250px;
+        }
+
+        .carousel img {
+            width: 100%;
+            max-width: 300px;
+            height: 150px;
+            margin-bottom: 15px;
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
+
+        .carousel-controls button {
+            background-color: #b30000;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .carousel-controls button:hover {
+            background-color: #990000;
+        }
+
+        .table-section {
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .table-section table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table-section th,
+        .table-section td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .table-section th {
+            background-color: #333;
+            color: white;
+        }
+
+        .table-section tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <img src="C:\Users\oweth\OneDrive\Documents\Project - ITPJA3\Codes\Images\Company Logo.jpg" alt="Company Logo">
+
+            <ul>
+                <li class="active">
+                    <img src="C:\Users\oweth\OneDrive\Documents\Project - ITPJA3\Codes\Images\Home Icon.png" alt="home icon">
+                  Dashboard
+                 
+                </li>
+                <li>
+                    <img src="C:\Users\oweth\OneDrive\Documents\Project - ITPJA3\Codes\Images\User Icon.png" alt= "user icon">
+                Users
+                </li>
+                <li>
+                    <img src="C:\Users\oweth\OneDrive\Documents\Project - ITPJA3\Codes\Images\Payment Icon.png" alt="payment icon">
+                    Payments
+                </li>
+                <li>
+                    <img src="C:\Users\oweth\OneDrive\Documents\Project - ITPJA3\Codes\Images\File Icon.png" alt="file icon">
+              Course Management
+                </li>
+                <li>
+                    <img src="C:\Users\oweth\OneDrive\Documents\Project - ITPJA3\Codes\Images\Calendar Icon.png"alt="calendar icon">
+                    Calendar
+                </li>
+                <li>
+                    <img src="C:\Users\oweth\OneDrive\Documents\Project - ITPJA3\Codes\Images\Booking Icon.png" alt="bookings icon">
+                    Bookings
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Topbar -->
+            <div class="topbar">
+                <h1>Admin Dashboard</h1>
+                <div class="admin-info">
+                    <img src="C:\Users\oweth\OneDrive\Documents\Project - ITPJA3\Codes\Images\Admin Icon.png" alt="admin icon">
+                    <span>Admin</span>
+                    <img src="C:\Users\oweth\OneDrive\Documents\Project - ITPJA3\Codes\Images\Logout Icon.png" alt="logout icon">
+                   
+                    
+                </div>
+            </div>
+
+            <!-- Carousel Section -->
+            <div class="carousel">
+                <img src="https://via.placeholder.com/300x150" alt="carousel image">
+                <div class="carousel-controls">
+                    <button>← Previous</button>
+                    <button>Next →</button>
+                </div>
+            </div>
+
+            <!-- Table Section -->
+            <div class="table-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Start Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Web Development</td>
+                            <td>July 10, 2024</td>
+                            <td>Ongoing</td>
+                        </tr>
+                        <tr>
+                            <td>Machine Learning</td>
+                            <td>August 05, 2024</td>
+                            <td>Upcoming</td>
+                        </tr>
+                        <tr>
+                            <td>Cloud Computing</td>
+                            <td>September 15, 2024</td>
+                            <td>Upcoming</td>
+                        </tr>
+                        <tr>
+                            <td>Data Science</td>
+                            <td>July 01, 2024</td>
+                            <td>Completed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
