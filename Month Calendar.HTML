@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClosingClient.io Month Calendar</title>
+   
+</head>
+<body>
+    <div class="header">
+        <h1>ClosingClient.io Calendar</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="#">Courses</a>
+        <a href="#">Community</a>
+        <a href="#">Calendar</a>
+    </div>
+
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <span class="calendar-nav" id="prevMonth">&lt;</span>
+            <span id="currentMonth">September 2024</span>
+            <span class="calendar-nav" id="nextMonth">&gt;</span>
+        </div>
+        <div class="calendar-body">
+            <div class="weekdays">
+                <div class="weekday">Sun</div>
+                <div class="weekday">Mon</div>
+                <div class="weekday">Tue</div>
+                <div class="weekday">Wed</div>
+                <div class="weekday">Thu</div>
+                <div class="weekday">Fri</div>
+                <div class="weekday">Sat</div>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+    </div>
+
+    <div id="commentModal" class="comment-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalDate"></h2>
+            <textarea id="commentText" rows="4" style="width: 100%; margin-bottom: 10px;"></textarea>
+            <button onclick="saveComment()">Save Comment</button>
+        </div>
+    </div>
+
+    
+    <script src="Month Calendar.CSS"></script> 
+</body>
+</html>
