@@ -1,0 +1,202 @@
+       /* Body and Global Styles */
+       body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+/*ClosingClient.io Header*/
+    .header {
+        background-color: #b30000;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 5px solid #333;
+    }
+
+
+    .header h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 400;
+    }
+
+/**Navigation Bar*/
+    .navbar {
+        display: flex;
+        justify-content: center;
+        padding: 15px;
+        background-color: #333;
+    }
+
+
+    .navbar a {
+        color: #fff;
+        padding: 14px 20px;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+
+    .navbar a:hover {
+        background-color: #b30000;
+        border-radius: 5px;
+    }
+
+
+    /*Week Navigation Bars*/
+    .week-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .week-navigation button {
+        background-color: #b30000;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    /* Main Container */
+    .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    .calendar-header h2 {
+        color: #333;
+        font-weight: 400;
+    }
+
+
+    .calendar-header button {
+        background-color: #b30000;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+
+    .calendar-header button:hover {
+        background-color: #990000;
+    }
+
+
+    .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+
+    .calendar .day {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+
+    .calendar .day.active {
+        background-color: #e6e6e6;
+    }
+
+
+    .event {
+        background-color: #b30000;
+        color: white;
+        padding: 5px;
+        font-size: 14px;
+        border-radius: 8px;
+        margin-top: 5px;
+        display: inline-block;
+    }
+
+
+    .date {
+        font-size: 18px;
+        color: #333;
+    }
+
+
+    .time-slot {
+        background-color: #4c4c4c;
+        color: #fff;
+        font-size: 12px;
+        padding: 2px 5px;
+        border-radius: 4px;
+    }
+
+
+    /* Modal for adding event */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .modal-content {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        width: 400px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+
+    .modal-content input[type="text"],
+    .modal-content input[type="time"] {
+        width: 80%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+
+    .modal-content button {
+        background-color: #b30000;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+    .modal-content button:hover {
+        background-color: #990000;
+    }
