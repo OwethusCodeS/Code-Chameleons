@@ -123,14 +123,17 @@ input[type="submit"]:hover {
     <div class="navbar">
         <a href="#">Courses</a>
         <a href="#">Community</a>
-        <a href="#">Calendar</a>
+        <a href="Month Calendar.HTML">Calendar</a>
     </div>
 
     <div class="container">
         <h2>Booking Form</h2>
         <form action="/submit-booking" method="POST">
-            <label for="full-name">Full Name:</label>
-            <input type="text" id="full-name" name="full-name" placeholder="Enter your full name" required>
+            <label for="first-name">first Name:</label>
+            <input type="text" id="first-name" name="first-name" placeholder="Enter your first name" required>
+
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" name="last-name" placeholder="Enter your last name" required>
 
             <label for="email">Email Address:</label>
             <input type="email" id="email" name="email" placeholder="Enter your email" required>
