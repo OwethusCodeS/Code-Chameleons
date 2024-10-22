@@ -6,118 +6,78 @@
     <title>Logout</title>
     <style>
       /* General Page Styling */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #0D1B2A;
-    color: white;
-    margin: 0;
-    padding: 0;
-}
+      body {
+          font-family: 'Arial', sans-serif;
+          background-color: #0D1B2A;
+          color: white;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+      }
 
-/* Navigation Bar Styling */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1B263B;
-    padding: 20px;
-}
+      /* Centering Container */
+      .logout-container {
+          text-align: center;
+          background-color: #1B263B;
+          padding: 40px 60px;
+          border-radius: 15px;
+          box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+          max-width: 400px;
+          width: 100%;
+      }
 
-.navbar .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-}
+      .logout-container h1 {
+          font-size: 28px;
+          margin-bottom: 20px;
+      }
 
-.navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
+      /* Button Container Styling */
+      .logout-buttons {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 30px;
+      }
 
-.navbar ul li {
-    margin-left: 20px;
-    font-size: 18px;
-}
+      .logout-buttons button {
+          background-color: #1DA1F2;
+          border: none;
+          color: white;
+          font-size: 16px;
+          padding: 10px 30px;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          width: 48%;
+      }
 
-.navbar ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-}
+      .logout-buttons button:hover {
+          background-color: #137AC7;
+      }
 
-.navbar ul li a:hover {
-    background-color: #415A77;
-    border-radius: 5px;
-}
+      .logout-buttons button.cancel {
+          background-color: transparent;
+          border: 2px solid #1DA1F2;
+          color: #1DA1F2;
+          transition: all 0.3s ease;
+      }
 
-/* Logout Button Styling */
-.navbar .logout-button {
-    background-color: #1DA1F2;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+      .logout-buttons button.cancel:hover {
+          background-color: #1DA1F2;
+          color: white;
+      }
 
-.navbar .logout-button:hover {
-    background-color: #137AC7;
-}
-
-/* Main Content Area */
-.container {
-    text-align: center;
-    margin-top: 150px;
-}
-
-.container h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-
-.container p {
-    font-size: 18px;
-    margin-bottom: 30px;
-}
-
-/* Previous and Next Button Styling */
-.container .button-group {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.container .button-group button {
-    padding: 10px 20px;
-    border: 2px solid #415A77;
-    background-color: transparent;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.container .button-group button:hover {
-    background-color: #1DA1F2;
-    border-color: #1DA1F2;
-}
-
-/* Footer for additional info or copyright */
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: 20px;
-    background-color: #1B263B;
-    color: #8899A6;
-}
-  
+      /* Footer Styling */
+      footer {
+          text-align: center;
+          position: absolute;
+          bottom: 10px;
+          width: 100%;
+          color: #8899A6;
+          font-size: 14px;
+      }
     </style>
 </head>
 <body>
@@ -125,9 +85,13 @@ footer {
         <h1>Are you sure you want to log out?</h1>
         <div class="logout-buttons">
             <button onclick="confirmLogout()">Yes, Logout</button>
-            <button onclick="cancelLogout()">Cancel</button>
+            <button class="cancel" onclick="cancelLogout()">Cancel</button>
         </div>
     </div>
+
+    <footer>
+        &copy; 2024 ClosingClients.io
+    </footer>
 
     <script>
         function confirmLogout() {
