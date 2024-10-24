@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClosingClients.io - Calendar</title>
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #111;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4285f4;
+            margin-bottom: 30px;
+        }
+
+        .nav-item {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: #fff;
+            background-color: #222;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .nav-item:hover {
+            background-color: #333;
+        }
+
+        .nav-item span {
+            margin-right: 10px;
+            color: #4285f4;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background: radial-gradient(circle at center, #001f3f, #000);
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .logout-btn {
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #3367d6;
+        }
+
+        .calendar-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        #eventModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            color: #000;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding: 8px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        /* FullCalendar custom styles */
+        .fc-theme-standard td, .fc-theme-standard th {
+            border-color: #ddd;
+        }
+
+        .fc-daygrid-day-number, .fc-col-header-cell-cushion, .fc-timegrid-axis-cushion, .fc-timegrid-slot-label-cushion {
+            color: #333;
+        }
+
+        .fc-daygrid-day.fc-day-today, .fc-timegrid-col.fc-day-today {
+            background-color: rgba(66, 133, 244, 0.2);
+        }
+
+        .fc-button-primary {
+            background-color: #4285f4;
+            border-color: #4285f4;
+        }
+
+        .fc-button-primary:hover {
+            background-color: #3367d6;
+            border-color: #3367d6;
+        }
+
+        .fc-toolbar-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Responsive design */
+        @media only screen and (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">ClosingClients.io</div>
+        <nav>
+            <button class="nav-item" onclick="navigateToPage('dashboard')"><span></span> Dashboard</button>
+            <button class="nav-item" onclick="navigateToPage('course-material')"><span></span> Course Material</button>
+            <button class="nav-item" onclick="navigateToPage('messages')"><span></span> Messages</button>
+            <button class="nav-item" onclick="navigateToPage('calendar')"><span></span> Calendar</button>
+            <button class="nav-item" onclick="navigateToPage('bookings')"><span></span> Bookings</button>
+        </nav>
+    </div>
+    <div class="main-content">
+        <header class="header">
+            <h1>Calendar</h1>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </header>
+        <div class="search-box">
+            <input type="text" id="searchEvents" placeholder="Search for events..." />
+        </div>
+        <div class="calendar-container">
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+    <!-- Modal for Event Details -->
+    <div id="eventModal">
+        <h2 id="eventTitle">Event Details</h2>
+        <p><strong>Location:</strong> <span id="eventLocation"></span></p>
+        <p><strong>Time:</strong> <span id="eventTime"></span></p>
+        <button id="editEvent">Edit</button>
+        <button id="deleteEvent">Delete</button>
+        <button id="closeModal">Close</button>
+    </div>
+
+    <!-- FullCalendar JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let calendarEl = document.getElementById('calendar');
+            let calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                titleFormat: { year: 'numeric', month: 'long' },
+                buttonText: {
+                    today: 'Today',
+                    month: 'Month',
+                    week: 'Week',
+                    day: 'Day'
+                },
+                slotDuration: '01:00:00',
+                slotLabelFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    omitZeroMinute: false,
+                    meridiem: 'short'
+                },
+                allDaySlot: false,
+                selectable: true,
+                editable: true,
+                events: getEventsFromLocalStorage(),
+                eventClick: function(info) {
+                    openModal(info.event);
+                },
+                dateClick: function(info) {
+                    let title = prompt('Enter event title:');
+                    if (title) {
+                        let eventData = {
+                            title: title,
+                            start: info.dateStr,
+                            location: prompt('Enter event location:')
+                        };
+                        calendar.addEvent(eventData);
+                        saveEventToLocalStorage(eventData);
+                    }
+                },
+                eventDrop: function(info) {
+                    updateEventInLocalStorage(info.event);
+                }
+            });
+
+            calendar.render();
+
+            // Search functionality
+            const searchBox = document.getElementById('searchEvents');
+            searchBox.addEventListener('input', function() {
+                const query = searchBox.value.toLowerCase();
+                let allEvents = calendar.getEvents();
+                allEvents.forEach(event => {
+                    if (event.title.toLowerCase().includes(query)) {
+                        event.setProp('display', 'auto');
+                    } else {
+                        event.setProp('display', 'none');
+                    }
+                });
+            });
+
+            // Modal handling
+            const eventModal = document.getElementById('eventModal');
+            const closeModalButton = document.getElementById('closeModal');
+            const editEventButton = document.getElementById('editEvent');
+            const deleteEventButton = document.getElementById('deleteEvent');
+
+            let currentEvent = null;
+
+            closeModalButton.addEventListener('click', function() {
+                eventModal.style.display = 'none';
+            });
+
+            editEventButton.addEventListener('click', function() {
+                if (currentEvent) {
+                    const newTitle = prompt('Edit event title:', currentEvent.title);
+                    const newLocation = prompt('Edit event location:', currentEvent.extendedProps.location);
+                    if (newTitle) {
+                        currentEvent.setProp('title', newTitle);
+                        currentEvent.setExtendedProp('location', newLocation);
+                        updateEventInLocalStorage(currentEvent);
+                    }
+                }
+                eventModal.style.display = 'none';
+            });
+
+            deleteEventButton.addEventListener('click', function() {
+                if (currentEvent) {
+                    currentEvent.remove();
+                    deleteEventFromLocalStorage(currentEvent);
+                }
+                eventModal.style.display = 'none';
+            });
+
+            function openModal(event) {
+                currentEvent = event;
+                document.getElementById('eventTitle').textContent = event.title;
+                document.getElementById('eventLocation').textContent = event.extendedProps.location || 'Not specified';
+                document.getElementById('eventTime').textContent = event.start.toLocaleString();
+                eventModal.style.display = 'block';
+            }
+
+            // Local storage functions
+            function getEventsFromLocalStorage() {
+                let events = localStorage.getItem('events');
+                return events ? JSON.parse(events) : [];
+            }
+
+            function saveEventToLocalStorage(eventData) {
+                let events = getEventsFromLocalStorage();
+                events.push(eventData);
+                localStorage.setItem('events', JSON.stringify(events));
+            }
+
+            function updateEventInLocalStorage(event) {
+                let events = getEventsFromLocalStorage();
+                const index = events.findIndex(e => e.start === event.startStr && e.title === event.title);
+                if (index > -1) {
+                    events[index].title = event.title;
+                    events[index].location = event.extendedProps.location;
+                    events[index].start = event.startStr;
+                }
+                localStorage.setItem('events', JSON.stringify(events));
+            }
+
+            function deleteEventFromLocalStorage(event) {
+                let events = getEventsFromLocalStorage();
+                const updatedEvents = events.filter(e => e.start !== event.startStr || e.title !== event.title);
+                localStorage.setItem('events', JSON.stringify(updatedEvents));
+            }
+        });
+
+        function navigateToPage(pageName) {
+            window.location.href = pageName + '.html';
+        }
+
+        function logout() {
+            window.location.href = 'signup.html';
+        }
+    </script>
+</body>
+</html>

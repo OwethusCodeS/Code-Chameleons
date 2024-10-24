@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClosingClients.io - Login/Signup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #000;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .auth-container {
+            background-color: #111;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 0.5rem;
+        }
+        input {
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: #222;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4285f4;
+            color: #fff;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #3367d6;
+        }
+        .toggle-form {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .toggle-form a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">ClosingClients.io</div>
+    </nav>
+
+    <main>
+        <div class="auth-container">
+            <h2 id="formTitle">Sign in </h2>
+            <form id="authForm">
+                <div id="nameField" style="display: none;">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <label for="email">Email address</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit" id="submitBtn">Sign in</button>
+            </form>
+            <div class="toggle-form">
+                <p>Don't have an account? <a href="#" id="toggleForm">Sign up</a></p>
+                
+            </div>
+        </div>
+    </main>
+
+    <script>
+        
+
+
+        const formTitle = document.getElementById('formTitle');
+        const authForm = document.getElementById('authForm');
+        const nameField = document.getElementById('nameField');
+        const submitBtn = document.getElementById('submitBtn');
+        const toggleForm = document.getElementById('toggleForm');
+  
+        
+        
+        let isLogin = true;
+
+        // Toggle between login and signup form
+        toggleForm.addEventListener('click', (e) => {
+            e.preventDefault();
+            isLogin = !isLogin;
+            if (isLogin) {
+                formTitle.textContent = 'Sign in ';
+                nameField.style.display = 'none';
+                submitBtn.textContent = 'Sign in';
+                toggleForm.textContent = 'Sign up';
+            
+            } else {
+                formTitle.textContent = 'Create your account';
+                nameField.style.display = 'block';
+                submitBtn.textContent = 'Sign up';
+                toggleForm.textContent = 'Sign in';
+                       
+                
+            }
+
+        
+
+        });
+
+        // Handle form submission for both login and signup
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();  // Prevent form from submitting traditionally
+
+            // Log which form is being submitted
+            if (isLogin) {
+                console.log('Logging in...');
+            } else {
+                console.log('Signing up...');
+            }
+
+            // Simulate successful login/signup and redirect to the home page
+            window.location.href = 'home.html';  
+
+
+
+            authForm.addEventListener('submit', (e) => {
+    const password = document.getElementById('password').value;
+
+    // Check password strength
+    if (!isValidPassword(password)) {
+        e.preventDefault();
+        alert("Password not strong enough");
+        return;
+    }
+
+    // If valid, proceed with form submission and PHP authentication
+    console.log('Form submitted:', isLogin ? 'Login' : 'Signup');
+    window.location.href = 'home.html';
+});
+        });
+
+
+        authForm.addEventListener('submit', (e) => {
+    const password = document.getElementById('password').value;
+
+    // Check password strength
+    if (!isValidPassword(password)) {
+        e.preventDefault();
+        alert("Password not strong enough");
+        return;
+    }
+
+    // If valid, proceed with form submission and PHP authentication
+    console.log('Form submitted:', isLogin ? 'Login' : 'Signup');
+    window.location.href = 'home.html';
+});
+
+// Password strength validation function
+function isValidPassword(password) {
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    return (
+        password.length >= minLength &&
+        hasUppercase &&
+        hasLowercase &&
+        hasNumber &&
+        hasSpecialChar
+    );
+}
+
+    </script>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>;
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>;
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"></script>;
+
+<script src="register.js"></script>
+
+
+</body>
+
+</html>
