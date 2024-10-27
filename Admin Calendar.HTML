@@ -1,0 +1,229 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClosingClient.io Weekly Calendar</title>
+
+</head>
+<style>
+    
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0b0b0d;
+    color: white;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 20px;
+    background-color: #000;
+}
+
+.header h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #000;
+    padding: 10px;
+}
+
+.navbar a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #00aaff;
+}
+
+/* Calendar Container */
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #111;
+    border-radius: 10px;
+}
+
+/* Calendar Header */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-header h2 {
+    font-size: 24px;
+}
+
+#addEventButton {
+    padding: 10px 20px;
+    background-color: #008CFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#addEventButton:hover {
+    background-color: #006FDD;
+}
+
+/* Calendar Grid */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.calendar div {
+    background-color: #222;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+
+/* Week Navigation Buttons */
+.week-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#prevWeekButton, #nextWeekButton {
+    padding: 10px 20px;
+    background-color: #008CFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#prevWeekButton:hover, #nextWeekButton:hover {
+    background-color: #006FDD;
+}
+
+/* Modal for Adding Event */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+}
+
+.modal-content h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+}
+
+#saveEventButton {
+    padding: 10px 20px;
+    background-color: #008CFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#saveEventButton:hover {
+    background-color: #006FDD;
+}
+
+</style>
+<body>
+
+    <div class="header">
+        <h1>ClosingClient.io Calendar</h1>
+    </div>
+
+    <div class="navbar">
+        <a href="#">Home</a>
+        <a href="">Community Feed</a>
+        <a href="#">Course Material</a>
+        <a href="#"> Month Calendar</a>
+    </div>
+
+    <div class="container">
+        <div class="calendar-header">
+            <h2 id="currentWeek">August 2024</h2>
+            <button id="addEventButton">Add Event</button>
+        </div>
+
+        <div class="calendar">
+            <!-- Days of the week will be dynamically generated here -->
+        </div>
+
+        <!-- Week Navigation Buttons -->
+        <div class="week-navigation">
+            <button id="prevWeekButton">Previous Week</button>
+            <button id="nextWeekButton">Next Week</button>
+        </div>
+    </div>
+
+    <!-- Modal for Adding Event -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <h3>Add Event</h3>
+            <p id="selectedDateDisplay"></p>
+            <input type="text" id="eventName" placeholder="Event Name">
+            <input type="time" id="eventTimeStart" placeholder="Start Time">
+            <input type="time" id="eventTimeEnd" placeholder="End Time">
+            <button id="saveEventButton">Save Event</button>
+        </div>
+    </div>
+
+    
+       <script src="Calendar.JS"></script> 
+    
+    
+</body>
+</html>

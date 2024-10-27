@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClosingClients.io - Material Management</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <!-- Importing Google font - Poppins -->
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #F0F4FF;
+      display: flex;
+    }
+
+    /* Container */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      grid-template-rows: auto 1fr;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 85px;
+      display: flex;
+      overflow-x: hidden;
+      flex-direction: column;
+      background: #161a2d;
+      padding: 25px 20px;
+      transition: all 0.4s ease;
+    }
+
+    .sidebar:hover {
+      width: 260px;
+    }
+
+    .sidebar li.active {
+      background-color:  #00aaff;
+    }
+
+    .sidebar .sidebar-header {
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar .sidebar-header h2 {
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 600;
+      white-space: nowrap;
+      margin-left: 23px;
+    }
+
+    .sidebar-links h4 {
+      color: #fff;
+      font-weight: 500;
+      white-space: nowrap;
+      margin: 10px 0;
+      position: relative;
+    }
+
+    .sidebar-links h4 span {
+      opacity: 0;
+    }
+
+    .sidebar:hover .sidebar-links h4 span {
+      opacity: 1;
+    }
+
+    .sidebar-links .menu-separator {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 1px;
+      transform: scaleX(1);
+      transform: translateY(-50%);
+      background: #4f52ba;
+      transform-origin: right;
+      transition-delay: 0.2s;
+    }
+
+    .sidebar:hover .sidebar-links .menu-separator {
+      transition-delay: 0s;
+      transform: scaleX(0);
+    }
+
+    .sidebar-links {
+      list-style: none;
+      margin-top: 20px;
+      height: 80%;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .sidebar-links::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sidebar-links li a {
+      display: flex;
+      align-items: center;
+      gap: 0 20px;
+      color: #fff;
+      font-weight: 500;
+      white-space: nowrap;
+      padding: 15px 10px;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .sidebar-links li a:hover {
+      color: #161a2d;
+      background: #fff;
+      border-radius: 4px;
+    }
+
+    /* User Account Section */
+    .user-account {
+      margin-top: auto;
+      padding: 12px 10px;
+      margin-left: -10px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      color: #161a2d;
+    }
+
+    .user-profile img {
+      width: 42px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+
+    .user-profile h3 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .user-profile span {
+      font-size: 0.775rem;
+      font-weight: 600;
+    }
+
+    .user-detail {
+      margin-left: 23px;
+      white-space: nowrap;
+    }
+
+    .sidebar:hover .user-account {
+      background: #fff;
+      border-radius: 4px;
+    }
+
+    /* User Management Container */
+    .container {
+      margin-left: 85px;
+      padding: 20px;
+      width: calc(100% - 85px);
+      background-color: white;
+      border-radius: 10px;
+      max-width: 1200px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: margin-left 0.4s ease;
+    }
+
+    .sidebar:hover ~ .container {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+    }
+
+    h1 {
+      color: #150578;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #333;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .edit-btn {
+      background-color: #4285f4;
+    }
+
+    .delete-btn {
+      background-color:#161a2d;
+    }
+
+    .add-msg-form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .add-msg-form input {
+      flex: 1;
+      padding: 10px;
+      font-size: 1em;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .add-msg-form button {
+      background-color: #4285f4;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .add-msg-form button:hover {
+      background-color: #357ae8;
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>ClosingClients.io</h2>
+      <div class="menu-separator"></div>
+    </div>
+    <ul class="sidebar-links">
+        <h4><span>Main Menu</span><div class="menu-separator"></div></h4>
+        <li><a href="Admin Dashboard.HTML"><span class="material-symbols-outlined"> dashboard </span>Dashboard</a></li>
+      <li><a href="User Managment.HTML"><span class="material-symbols-outlined"> person </span>User</a></li>
+      <li><a href="Calendar Managment.html"><span class="material-symbols-outlined"> calendar_today </span>Calendar</a></li>
+      <li><a href="Bookings Managment.html"><span class="material-symbols-outlined"> event_seat </span>Bookings</a></li>
+      <li><a href="Material Managment.html"><span class="material-symbols-outlined"> folder </span>Course Material</a></li>
+        
+      <h4><span>Account</span><div class="menu-separator"></div></h4>
+     
+      <li><a href="#"><span class="material-symbols-outlined"> settings </span>Settings</a></li>
+      <li><a href="Log out.html"><span class="material-symbols-outlined"> logout </span>Logout</a></li>
+      <li><a href="#"><span class="material-symbols-outlined"> shield_person </span>Admin</a></li>
+    </ul>
+    <div class="user-account">
+      <div class="user-profile">
+        <div class="user-detail">
+          
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="container">
+    <h1>Course Material Management</h1>
+    
+  <!-- Add New Message Form -->
+  <h2>Add Course File</h2>
+</body>
+</html>

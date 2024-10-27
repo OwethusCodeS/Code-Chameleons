@@ -269,19 +269,20 @@ tr:nth-child(even) {
       <h2>ClosingClients.io</h2>
       <div class="menu-separator"></div>
     </div>
+    
     <ul class="sidebar-links">
       <h4><span>Main Menu</span><div class="menu-separator"></div></h4>
       <li><a href="Admin Dashboard.HTML"><span class="material-symbols-outlined"> dashboard </span>Dashboard</a></li>
-          <li><a href="User Managment.HTML"><span class="material-symbols-outlined"> person </span>User</a></li>
-          <li><a href="Calendar Managment.html"><span class="material-symbols-outlined"> calendar_today </span>Calendar</a></li>
-          <li><a href="Bookings Managment.html"><span class="material-symbols-outlined"> event_seat </span>Bookings</a></li>
-          <li><a href="Announcements Management.HTML"><span class="material-symbols-outlined"> campaign </span>Announcements</a></li>
-    
-      <h4><span>Account</span><div class="menu-separator"></div></h4>
-     
-      <li><a href="#"><span class="material-symbols-outlined"> settings </span>Settings</a></li>
-            <li><a href="Log out.html"><span class="material-symbols-outlined"> logout </span>Logout</a></li>
-            <li><a href="#"><span class="material-symbols-outlined"> shield_person </span>Admin</a></li>
+    <li><a href="User Managment.HTML"><span class="material-symbols-outlined"> person </span>User</a></li>
+    <li><a href="Calendar Managment.html"><span class="material-symbols-outlined"> calendar_today </span>Calendar</a></li>
+    <li><a href="Bookings Managment.html"><span class="material-symbols-outlined"> event_seat </span>Bookings</a></li>
+    <li><a href="Material Managment.html"><span class="material-symbols-outlined"> folder </span>Course Material</a></li>
+      
+    <h4><span>Account</span><div class="menu-separator"></div></h4>
+   
+    <li><a href="#"><span class="material-symbols-outlined"> settings </span>Settings</a></li>
+    <li><a href="Log out.html"><span class="material-symbols-outlined"> logout </span>Logout</a></li>
+    <li><a href="#"><span class="material-symbols-outlined"> shield_person </span>Admin</a></li>
     </ul>
     <div class="user-account">
       <div class="user-profile">
@@ -320,94 +321,77 @@ tr:nth-child(even) {
         </tr>
       </thead>
       <tbody>
-        <!-- Dynamic rows will be inserted here by JavaScript -->
+        <!-- Dynamic rows will be inserted here by JavaScript rom the data stored -->
       </tbody>
     </table>
   </div>
 
-  <!--JS without PHP integration -- Add PHP proper usage-->
   <script>
-    let users = [];  // Array to store users
-    let editMode = false;  // Track if editing an existing user
-
-    // Handle form submission for adding or editing users
-    document.querySelector('#addUserForm').addEventListener('submit', function (event) {
-      event.preventDefault();  // Prevent form submission to server
-
-      // Fetch values from form inputs
-      const id = document.querySelector('#userId').value;
-      const firstName = document.querySelector('#firstName').value;
-      const lastName = document.querySelector('#lastName').value;
-      const email = document.querySelector('#email').value;
-      const role = document.querySelector('#role').value;
-      const fullName = `${firstName} ${lastName}`;
-
-      if (editMode) {
-        // If in edit mode, update the existing user
-        const userIndex = users.findIndex(user => user.id == id);
-        if (userIndex !== -1) {
-          users[userIndex].name = fullName;
-          users[userIndex].email = email;
-          users[userIndex].role = role;
-          editMode = false;  // Reset edit mode after saving changes
+    // This part of the code will render the table from the database after user actions
+    async function fetchUsers() {
+        try {
+            const response = await fetch('fetch_users.php');
+            const users = await response.json();
+            renderTable(users);
+        } catch (error) {
+            console.error('Error fetching users:', error);
         }
-      } else {
-        // If not in edit mode, create a new user
-        const newUserId = users.length ? users[users.length - 1].id + 1 : 1;
-        const newUser = { id: newUserId, name: fullName, email, role };
-        users.push(newUser);  // Add the new user to the 'users' array
-      }
-
-      // Reset the form inputs
-      document.querySelector('#addUserForm').reset();
-      document.querySelector('#userId').value = '';  // Clear hidden ID field
-
-      // Re-render the table with updated 'users' array
-      renderTable();
-    });
+    }
 
     // Function to render the user table
-    function renderTable() {
-      const tbody = document.querySelector('#userTable tbody');
-      tbody.innerHTML = '';  // Clear the current table body content
+    function renderTable(users) {
+        const tbody = document.querySelector('#userTable tbody');
+        tbody.innerHTML = '';  // Clear the current table body content
 
-      // Loop through the 'users' array and create table rows for each user
-      users.forEach(user => {
-        const row = document.createElement('tr');  // Create a new table row
-        row.innerHTML = `
-          <td>${user.id}</td>  <!-- User ID -->
-          <td>${user.name}</td>  <!-- User Name -->
-          <td>${user.email}</td>  <!-- User Email -->
-          <td>${user.role}</td>  <!-- User Role -->
-          <td>
-            <!-- Edit and Delete buttons -->
-            <button class="btn edit-btn" onclick="editUser(${user.id})">Edit</button>
-            <button class="btn delete-btn" onclick="deleteUser(${user.id})">Delete</button>
-          </td>
-        `;
-        tbody.appendChild(row);  // Add the new row to the table body
-      });
+        // Loop through the 'users' array and create table rows for each user
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.role}</td>
+                <td>
+                    <button class="btn edit-btn" onclick="editUser(${user.id})">Edit</button>
+                    <button class="btn delete-btn" onclick="deleteUser(${user.id})">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(row);  // Add the new row to the table body
+        });
     }
 
     // Function to handle editing a user
     function editUser(id) {
-      const user = users.find(user => user.id == id);
-      if (user) {
-        document.querySelector('#userId').value = user.id;
-        document.querySelector('#firstName').value = user.name.split(' ')[0];
-        document.querySelector('#lastName').value = user.name.split(' ')[1];
-        document.querySelector('#email').value = user.email;
-        document.querySelector('#role').value = user.role;
-        editMode = true;  // Set edit mode to true
-      }
+        const user = users.find(user => user.id == id);
+        if (user) {
+            document.querySelector('#userId').value = user.id;
+            document.querySelector('#firstName').value = user.name.split(' ')[0];
+            document.querySelector('#lastName').value = user.name.split(' ')[1];
+            document.querySelector('#email').value = user.email;
+            document.querySelector('#role').value = user.role;
+            editMode = true;  // Set edit mode to true
+        }
     }
 
     // Function to handle deleting a user
-    function deleteUser(id) {
-      users = users.filter(user => user.id != id);  // Remove user from array
-      renderTable();  // Re-render the table after deletion
+    async function deleteUser(id) {
+        try {
+            await fetch('user_handler.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `deleteUser=true&userId=${id}`,
+            });
+            fetchUsers();  // Refresh the user table after deletion
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
     }
-  </script>
+
+    // Call fetchUsers to initially load the users from the database
+    fetchUsers();
+</script>
 
 </body>
 </html>

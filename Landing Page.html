@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClosingClients.io - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #000;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .logout-btn {
+            background-color: #4285f4;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #3367d6;
+        }
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+        .cta-btn {
+            background-color: #4285f4;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+        .cta-btn:hover {
+            background-color: #3367d6;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">ClosingClients.io</div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </nav>
+
+    <main>
+        <h1>Welcome to ClosingClients.io</h1>
+        <p>You've successfully logged in. Start exploring our features to boost your business and close more deals!</p>
+        <a href="ClosingClients Sign In.html" class="cta-btn">Get Started</a>
+    </main>
+
+    <script>
+        function logout() {
+            // In a real application, you would handle the logout process here
+            // For now, we'll just redirect to the login page
+            window.location.href = 'ClosinClients Sign in,html';
+        }
+
+        // Add event listener to the "Get Started" button
+        document.addEventListener('DOMContentLoaded', function() {
+            const getStartedBtn = document.querySelector('.cta-btn');
+            getStartedBtn.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default link behavior
+                window.location.href = ''; // Navigate to the dashboard
+            });
+        });
+    </script>
+</body>
+</html>

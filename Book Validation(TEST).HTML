@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClosingClient.io Event Booking</title>
+
+    <style>
+        /* Body and Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #0b0b0d;
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+
+        /*ClosingClient.io Header*/
+        .header {
+            background-color:  #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid #333;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 400;
+        }
+
+        /**Navigation Bar*/
+        .navbar {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            background-color: #008CFF;
+        }
+
+        .navbar a {
+            color: #fff;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar a:hover {  
+            color: #008CFF;
+            border-radius: 5px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .container h2 {
+            color: #333;
+            font-weight: 400;
+        }
+
+        /* Event List */
+        .event-list {
+            margin-top: 20px;
+        }
+
+        .event {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .event-title {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .event-details {
+            margin-top: 10px;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .book-button {
+            background-color: #008CFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .book-button:hover {
+            background-color: #007acc;
+        }
+
+        /* Success and Error Messages */
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .error {
+            background-color: #FF5733;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>ClosingClient.io Event Booking</h1>
+    </div>
+
+    <div class="navbar">
+    
+        <a href="#">Booking</a>
+        <a href="#">Calendar</a>
+        <a href="#">Chat Messaging</a>
+        <a href="#">Course Material</a>
+    </div>
+
+    <div class="container">
+        <h2>ClosingClient.io Upcoming Events</h2>
+
+        <!-- Event List -->
+        <div class="event-list">
+            <div class="event" data-event-id="1">
+                <p class="event-title">Event 1: The Fundamentals of Sucessful Sales Pitch</p>
+                <p class="event-details">Date: October 24, 2024 | Time: 10:00 AM - 12:00 PM</p>
+                <button class="book-button">Book Event</button>
+            </div>
+            
+        </div>
+
+        <!-- Success and Error Messages -->
+        <div id="successMessage" class="message success">Your booking was successful!</div>
+        <div id="errorMessage" class="message error">You have already booked this event.</div>
+    </div>
+
+    <script>
+        // List of user bookings
+        let userBookings = [];
+
+        // Get all book buttons
+        const bookButtons = document.querySelectorAll('.book-button');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Function to handle booking
+        function handleBooking(eventId) {
+            if (userBookings.includes(eventId)) {
+                // If the user already booked this event, show error message
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            } else {
+                // Book the event and show success message
+                userBookings.push(eventId);
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+            }
+        }
+
+        // Add event listeners to book buttons
+        bookButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const eventId = this.parentElement.getAttribute('data-event-id');
+                handleBooking(eventId);
+            });
+        });
+    </script>
+
+</body>
+</html>
