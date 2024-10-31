@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 25px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4285f4;
+            margin-bottom: 30px;
+        }
+
+        nav {
+            width: 100%;
+        }
+
+        /* Navigation item styling */
+        .nav-item {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            color: #ffffff;
+            background-color: #333;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: left;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Active and hover state styling */
+        .nav-item.active, .nav-item:hover {
+            background-color: #555;
+            color: #4285f4;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+            background: radial-gradient(circle at center, #001f3f, #000);
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .logout-btn {
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #3367d6;
+        }
+
+        .tradingview-widget-copyright {
+            display: none !important;
+        }
+    </style>
+
+    <title>Real-Time Forex Chart</title>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">ClosingClients.io</div>
+        <nav>
+            <a href="ClosingClients Dashboard.html" class="nav-item active">Dashboard</a>
+            <a href="ClosingClients Calendar.html" class="nav-item">Calendar</a>
+            <a href="ClosingClients Booking.html" class="nav-item">Booking</a>
+            <a href="ClosingClients Messages.html" class="nav-item">Message</a>
+            <a href="Live View.HTML" class="nav-item">Charts</a>
+        </nav>
+    </div>
+    
+    <!-- Main content area -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Real-Time Forex Charts</h1>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+        
+        <!-- TradingView Widget -->
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+            {
+            "width": "1000",
+            "height": "600",
+            "defaultColumn": "performance",
+            "screener_type": "crypto_mkt",
+            "displayCurrency": "USD",
+            "colorTheme": "dark",
+            "locale": "en"
+          }
+            </script>
+        </div>
+        <!-- TradingView Widget END -->
+    </div>
+
+</body>
+</html>
