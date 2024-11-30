@@ -46,7 +46,7 @@ for a real company and is not the final project but only a template, this was fo
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/username/project-name.git
+   git clone https://github.com/OwethusCodeS/Code-Chameleons/tree/main
    cd project-name
    ```
 
