@@ -1,0 +1,47 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+
+export default function NotifyPage() {
+  const [notificationReceived, setNotificationReceived] = useState(false)
+
+  useEffect(() => {
+    // Simulate receiving a notification after 2 seconds
+    const timer = setTimeout(() => {
+      setNotificationReceived(true)
+      console.log('Notification received')
+      // In a real scenario, you would process the notification data here
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+        <h1 className="text-2xl font-bold text-center text-blue-600 mb-4">Notification Receiver</h1>
+        {notificationReceived ? (
+          <div>
+            <p className="text-green-600 text-center mb-4">Notification received and processed!</p>
+            <ul className="space-y-2">
+              <li className="flex justify-between">
+                <span className="text-gray-600">Status:</span>
+                <span className="font-medium">COMPLETE</span>
+              </li>
+              <li className="flex justify-between">
+                <span className="text-gray-600">Amount:</span>
+                <span className="font-medium">R 100.00</span>
+              </li>
+              <li className="flex justify-between">
+                <span className="text-gray-600">Timestamp:</span>
+                <span className="font-medium">{new Date().toISOString()}</span>
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <p className="text-gray-600 text-center">Waiting for notification...</p>
+        )}
+      </div>
+    </div>
+  )
+}

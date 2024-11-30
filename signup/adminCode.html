@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CTFX - Change Admin Code</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #F0F4FF;
+      display: flex;
+    }
+
+    /* Container */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      grid-template-rows: auto 1fr;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 85px;
+      display: flex;
+      overflow-x: hidden;
+      flex-direction: column;
+      background: #161a2d;
+      padding: 25px 20px;
+      transition: all 0.4s ease;
+    }
+
+    .sidebar:hover {
+      width: 260px;
+    }
+
+    .sidebar li.active {
+      background-color:  #00aaff;
+    }
+
+    .sidebar .sidebar-header {
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar .sidebar-header h2 {
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 600;
+      white-space: nowrap;
+      margin-left: 23px;
+    }
+
+    .sidebar-links h4 {
+      color: #fff;
+      font-weight: 500;
+      white-space: nowrap;
+      margin: 10px 0;
+      position: relative;
+    }
+
+    .sidebar-links h4 span {
+      opacity: 0;
+    }
+
+    .sidebar:hover .sidebar-links h4 span {
+      opacity: 1;
+    }
+
+    .sidebar-links .menu-separator {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 1px;
+      transform: scaleX(1);
+      transform: translateY(-50%);
+      background: #4f52ba;
+      transform-origin: right;
+      transition-delay: 0.2s;
+    }
+
+    .sidebar:hover .sidebar-links .menu-separator {
+      transition-delay: 0s;
+      transform: scaleX(0);
+    }
+
+    .sidebar-links {
+      list-style: none;
+      margin-top: 20px;
+      height: 80%;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .sidebar-links::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sidebar-links li a {
+      display: flex;
+      align-items: center;
+      gap: 0 20px;
+      color: #fff;
+      font-weight: 500;
+      white-space: nowrap;
+      padding: 15px 10px;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .sidebar-links li a:hover {
+      color: #161a2d;
+      background: #fff;
+      border-radius: 4px;
+    }
+
+    /* User Account Section */
+    .user-account {
+      margin-top: auto;
+      padding: 12px 10px;
+      margin-left: -10px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      color: #161a2d;
+    }
+
+    .user-profile img {
+      width: 42px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+
+    .user-profile h3 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .user-profile span {
+      font-size: 0.775rem;
+      font-weight: 600;
+    }
+
+    .user-detail {
+      margin-left: 23px;
+      white-space: nowrap;
+    }
+
+    .sidebar:hover .user-account {
+      background: #fff;
+      border-radius: 4px;
+    }
+
+    /* Content Container */
+    .container {
+      margin-left: 85px;
+      padding: 20px;
+      width: calc(100% - 85px);
+      background-color: white;
+      border-radius: 10px;
+      max-width: 1200px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: margin-left 0.4s ease;
+    }
+
+    .sidebar:hover ~ .container {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+    }
+
+    h1 {
+      color: #150578;
+      margin-bottom: 20px;
+    }
+
+    /* Admin Code Change Styles */
+    form {
+      display: flex;
+      flex-direction: column;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    input {
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      background: #4285f4;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #357ae8;
+    }
+
+    #message {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* Custom Logout Confirmation Box */
+    .logout-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .logout-box {
+      background-color: #fff;
+      padding: 20px;
+      width: 300px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .logout-box h3 {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    .logout-box button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .confirm-btn {
+      background-color: #4BBFB4;
+      color: white;
+    }
+    .cancel-btn {
+      background-color: #ccc;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>CTFX</h2>
+      <div class="menu-separator"></div>
+    </div>
+    <ul class="sidebar-links">
+      <h4><span>Main Menu</span><div class="menu-separator"></div></h4>
+      <li><a href="adminDashboard.html"><span class="material-symbols-outlined"> dashboard </span>Dashboard</a></li>
+      <li><a href="userManagement.html"><span class="material-symbols-outlined"> person </span>User Management</a></li>
+      <li><a href="announcements.html"><span class="material-symbols-outlined"> folder </span>Announcements</a></li>
+      <li><a href="/coursematerial/upload.html"><span class="material-symbols-outlined">school</span>Course Management</a></li>
+      
+      <h4><span>Account</span><div class="menu-separator"></div></h4>
+      
+      <li><a href="#" onclick="showLogoutOverlay()"><span class="material-symbols-outlined"> logout </span>Logout</a></li>
+    </ul>
+    <div class="user-account">
+      <div class="user-profile">
+        <div class="user-detail">
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="container">
+    <h1>Change Admin Code</h1>
+    <form id="adminCodeChangeForm">
+      <input type="password" id="currentAdminCode" placeholder="Current Admin Code" required>
+      <input type="password" id="newAdminCode" placeholder="New Admin Code" required>
+      <input type="password" id="confirmNewAdminCode" placeholder="Confirm New Admin Code" required>
+      <button type="submit">Change Admin Code</button>
+    </form>
+    <div id="message"></div>
+  </div>
+
+  <!-- Logout Confirmation Overlay -->
+  <div class="logout-overlay" id="logoutOverlay">
+    <div class="logout-box">
+      <h3>Are you sure you want to log out?</h3>
+      <button class="confirm-btn" onclick="confirmLogout()">Yes, Log Out</button>
+      <button class="cancel-btn" onclick="hideLogoutOverlay()">Cancel</button>
+    </div>
+  </div>
+
+  <script type="module">
+    // Import the functions you need from Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCaNzDsBYR5W3ilBn5WjpkL3JkXU-toNss",
+      authDomain: "closingclients-6afd9.firebaseapp.com",
+      databaseURL: "https://closingclients-6afd9-default-rtdb.firebaseio.com",
+      projectId: "closingclients-6afd9",
+      storageBucket: "closingclients-6afd9.appspot.com",
+      messagingSenderId: "172719805662",
+      appId: "1:172719805662:web:00f3153c44758dade75e4f"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+
+
+    document.getElementById('adminCodeChangeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const currentAdminCode = document.getElementById('currentAdminCode').value;
+      const newAdminCode = document.getElementById('newAdminCode').value;
+      const confirmNewAdminCode = document.getElementById('confirmNewAdminCode').value;
+      const messageDiv = document.getElementById('message');
+
+      if (newAdminCode !== confirmNewAdminCode) {
+        messageDiv.textContent = "New admin codes do not match.";
+        messageDiv.style.color = "red";
+        return;
+      }
+
+      try {
+        // Get the current admin code from Firestore
+        const adminCodeDoc = await getDoc(doc(db, "adminSettings", "adminCode"));
+        
+        if (!adminCodeDoc.exists()) {
+          throw new Error("Admin code document does not exist");
+        }
+
+        const currentStoredAdminCode = adminCodeDoc.data().code;
+
+        if (currentAdminCode !== currentStoredAdminCode) {
+          messageDiv.textContent = "Current admin code is incorrect.";
+          messageDiv.style.color = "red";
+          return;
+        }
+
+        // Update the admin code in Firestore
+        await updateDoc(doc(db, "adminSettings", "adminCode"), {
+          code: newAdminCode
+        });
+
+        messageDiv.textContent = "Admin code changed successfully!";
+        messageDiv.style.color = "green";
+        document.getElementById('adminCodeChangeForm').reset();
+      } catch (error) {
+        console.error("Error changing admin code:", error);
+        messageDiv.textContent = "Error changing admin code. Please try again.";
+        messageDiv.style.color = "red";
+      }
+    });
+
+    // Logout functions
+    window.showLogoutOverlay = function() {
+      document.getElementById('logoutOverlay').style.display = 'flex';
+    }
+
+    window.hideLogoutOverlay = function() {
+      document.getElementById('logoutOverlay').style.display = 'none';
+    }
+
+    window.confirmLogout = function() {
+      auth.signOut().then(() => {
+        window.location.href = '/signup/signup.html';
+      }).catch((error) => {
+        console.error("Error signing out: ", error);
+      });
+    }
+  </script>
+</body>
+</html>

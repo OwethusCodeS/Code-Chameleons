@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayFast Sandbox Payment Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PayFast Sandbox Test</h1>
+        <form action="https://sandbox.payfast.co.za/eng/process" method="post" id="payfast-form">
+            <input type="hidden" name="merchant_id" value="	10035664">
+            <input type="hidden" name="merchant_key" value="xpcblheej71ms">
+            <input type="hidden" name="amount" value="100.00">
+            <input type="hidden" name="item_name" value="Test Product">
+            <input type="hidden" name="return_url" value="https://closingclients-6afd9.web.app/paymentgateway/return.html">
+            <input type="hidden" name="cancel_url" value="https://closingclients-6afd9.web.app/paymentgateway/cancel.html">
+            <input type="hidden" name="notify_url" value="https://closingclients-6afd9.web.app/paymentgateway/notify.html">
+            
+            <div class="form-group">
+                <label for="name_first">First Name:</label>
+                <input type="text" id="name_first" name="name_first" required>
+            </div>
+            <div class="form-group">
+                <label for="name_last">Last Name:</label>
+                <input type="text" id="name_last" name="name_last" required>
+            </div>
+            <div class="form-group">
+                <label for="email_address">Email:</label>
+                <input type="email" id="email_address" name="email_address" required>
+            </div>
+            <button type="submit">Pay Now (Sandbox)</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

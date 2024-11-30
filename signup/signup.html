@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup</title>
+    <link rel="stylesheet" href="style login.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .admin-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .admin-checkbox input {
+            margin-right: 10px;
+        }
+        #adminCode {
+            display: none;
+            margin-bottom: 15px;
+        }
+        .admin-checkbox label {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        .messageDiv {
+            color: white;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+        }
+        .messageDiv.error {
+            background-color: #ff6b6b;
+        }
+        .messageDiv.success {
+            background-color: #51cf66;
+        }
+        .messageDiv .close-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #resendVerificationEmail {
+            margin-top: 10px;
+        }
+        #verificationStep {
+            display: none;
+        }
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            user-select: none;
+        }
+        .password-toggle .material-icons {
+            font-size: 20px;
+            color: #757575;
+        }
+        .message-container {
+            margin-bottom: 15px;
+        }
+        .password-strength {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .strength-meter {
+            height: 4px;
+            width: 100%;
+            background: #ddd;
+            margin-top: 5px;
+        }
+        .strength-meter div {
+            height: 100%;
+            width: 0;
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form id="signupForm">
+                <div class="message-container">
+                    <div id="signUpMessage" class="messageDiv"></div>
+                    <div id="accountCreatedMessage" class="messageDiv success" style="display: none;"></div>
+                    <div id="verificationMessage" class="messageDiv" style="display: none;"></div>
+                </div>
+                <h1>Create Account</h1>
+                <input type="text" id="name" placeholder="Name" required />
+                <input type="email" id="rEmail" placeholder="Email" required />
+                <div class="password-container">
+                    <input type="password" id="rPassword" placeholder="Password" required />
+                    <span class="password-toggle" onclick="togglePasswordVisibility('rPassword', this)">
+                        <i class="material-icons">visibility_off</i>
+                    </span>
+                </div>
+                <div class="password-container">
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+                    <span class="password-toggle" onclick="togglePasswordVisibility('confirmPassword', this)">
+                        <i class="material-icons">visibility_off</i>
+                    </span>
+                </div>
+                <div class="admin-checkbox">
+                    <input type="checkbox" id="isAdmin">
+                    <label for="isAdmin">Sign Up as Admin</label>
+                </div>
+                <input type="text" id="adminCode" placeholder="Admin Code">
+                <button class="btn" id="submitSignUp">Sign Up</button>
+                <button class="btn" id="resendVerificationEmail" style="display:none;">Resend Verification Email</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form id="signinForm">
+                <div class="message-container">
+                    <div id="signInMessage" class="messageDiv"></div>
+                </div>
+                <h1>Sign in</h1>
+                <input type="email" id="email" placeholder="Email" required />
+                <div class="password-container">
+                    <input type="password" id="password" placeholder="Password" required />
+                    <span class="password-toggle" onclick="togglePasswordVisibility('password', this)">
+                        <i class="material-icons">visibility_off</i>
+                    </span>
+                </div>
+                <a href="reset-password.html">Forgot your password?</a>
+                <button class="btn" id="submitSignIn">Sign In</button>
+            </form>
+            <div id="verificationStep" style="display:none;">
+                <h2>Verify Your Email</h2>
+                <p>We've sent a verification link to your email. Please click the link to verify your account.</p>
+                <button class="btn" id="checkVerification">I've Clicked the Link</button>
+                <button class="btn" id="resendVerificationEmailSignIn">Resend Verification Email</button>
+            </div>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>
+                        <img src="CTFX logo.png" alt="CTFX logo" class="logo" >
+                    </h1>
+                    <p></p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>
+                        <img src="CTFX logo.png" alt="CTFX logo" class="logo">
+                    </h1>
+                    <p></p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            sendEmailVerification,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            setDoc, 
+            doc,
+            getDoc
+        } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaNzDsBYR5W3ilBn5WjpkL3JkXU-toNss",
+            authDomain: "closingclients-6afd9.firebaseapp.com",
+            projectId: "closingclients-6afd9",
+            storageBucket: "closingclients-6afd9.appspot.com",
+            messagingSenderId: "172719805662",
+            appId: "1:172719805662:web:00f3153c44758dade75e4f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]+/)) strength++;
+            if (password.match(/[A-Z]+/)) strength++;
+            if (password.match(/[0-9]+/)) strength++;
+            if (password.match(/[$@#&!]+/)) strength++;
+            return strength;
+        }
+
+        function updatePasswordStrength() {
+            const password = document.getElementById('rPassword').value;
+            const strength = checkPasswordStrength(password);
+            const strengthMeter = document.querySelector('.strength-meter div');
+            const strengthText = document.querySelector('.password-strength p');
+
+            let strengthMessage = '';
+            let strengthColor = '';
+
+            switch (strength) {
+                case 0:
+                case 1:
+                    strengthMessage = 'Very weak';
+                    strengthColor = '#ff4d4d';
+                    break;
+                case 2:
+                    strengthMessage = 'Weak';
+                    strengthColor = '#ffa64d';
+                    break;
+                case 3:
+                    strengthMessage = 'Medium';
+                    strengthColor = '#ffff4d';
+                    break;
+                case 4:
+                    strengthMessage = 'Strong';
+                    strengthColor = '#4dff4d';
+                    break;
+                case 5:
+                    strengthMessage = 'Very strong';
+                    strengthColor = '#4d4dff';
+                    break;
+            }
+
+            strengthMeter.style.width = `${strength * 20}%`;
+            strengthMeter.style.backgroundColor = strengthColor;
+            strengthText.textContent = strengthMessage;
+        }
+
+        document.getElementById('rPassword').addEventListener('input', updatePasswordStrength);
+
+        async function getAdminCode() {
+            try {
+                const adminCodeDoc = await getDoc(doc(db, "adminSettings", "adminCode"));
+                if (adminCodeDoc.exists()) {
+                    return adminCodeDoc.data().code;
+                } else {
+                    console.error("Admin code document does not exist");
+                    return null;
+                }
+            } catch (error) {
+                console.error("Error fetching admin code:", error);
+                return null;
+            }
+        }
+
+        function showMessage(message, divId, isError = false) {
+            const messageDiv = document.getElementById(divId);
+            messageDiv.innerHTML = `
+                ${message}
+                <span class="close-btn">&times;</span>
+            `;
+            messageDiv.style.display = "block";
+            messageDiv.classList.add(isError ? 'error' : 'success');
+            messageDiv.classList.remove(isError ? 'success' : 'error');
+
+            const closeBtn = messageDiv.querySelector('.close-btn');
+            closeBtn.addEventListener('click', () => {
+                messageDiv.style.display = "none";
+            });
+        }
+
+        document.getElementById('isAdmin').addEventListener('change', function() {
+            document.getElementById('adminCode').style.display = this.checked ? 'block' : 'none';
+        });
+
+        async function resendVerificationEmail() {
+            const user = auth.currentUser;
+
+            if (user) {
+                try {
+                    await sendEmailVerification(user);
+                    showMessage('Verification email sent. Please check your inbox.', 'verificationMessage');
+                } catch (error) {
+                    console.error("Error sending verification email:", error);
+                    showMessage('Error sending verification email. Please try again later.', 'verificationMessage', true);
+                }
+            } else {
+                showMessage('No user is currently signed in.', 'verificationMessage', true);
+            }
+        }
+
+        document.getElementById('resendVerificationEmail').addEventListener('click', async (event) => {
+            event.preventDefault();
+            await resendVerificationEmail();
+        });
+
+        document.getElementById('resendVerificationEmailSignIn').addEventListener('click', async (event) => {
+            event.preventDefault();
+            await resendVerificationEmail();
+        });
+
+        const signUp = document.getElementById('submitSignUp');
+        signUp.addEventListener('click', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('rEmail').value;
+            const password = document.getElementById('rPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const name = document.getElementById('name').value;
+            const isAdmin = document.getElementById('isAdmin').checked;
+            const inputAdminCode = document.getElementById('adminCode').value;
+
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match', 'signUpMessage', true);
+                return;
+            }
+            
+            if (checkPasswordStrength(password) < 4) {
+                showMessage('Password not strong enough', 'signUpMessage', true);
+                return;
+            }
+
+            try {
+                if (isAdmin) {
+                    const correctAdminCode = await getAdminCode();
+                    if (!correctAdminCode || inputAdminCode !== correctAdminCode) {
+                        throw new Error("Invalid admin code");
+                    }
+                }
+
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                await sendEmailVerification(user);
+
+                const userData = {
+                    email: email,
+                    name: name,
+                    isAdmin: isAdmin
+                };
+                
+                console.log("User created:", userData);
+                
+                showMessage('Account created successfully. Please check your email to verify your account.', 'accountCreatedMessage');
+                const docRef = doc(db, "users", user.uid);
+                await setDoc(docRef, userData);
+
+                if (isAdmin) {
+                    await setDoc(doc(db, "admins", user.uid), {
+                        name: name,
+                        email: email
+                    });
+                    console.log("Admin document created");
+                }
+
+                // Show the resend verification email button
+                document.getElementById('resendVerificationEmail').style.display = 'block';
+
+                // Clear the form
+                document.getElementById('signupForm').reset();
+            } catch (error) {
+                console.error("Error during sign up:", error);
+                const errorCode = error.code;
+                if (errorCode === 'auth/email-already-in-use') {
+                    showMessage('Email Address Already Exists!', 'signUpMessage', true);
+                } else {
+                    showMessage('Unable to create User ', 'signUpMessage', true);
+                }
+            }
+        });
+
+        const signIn = document.getElementById('submitSignIn');
+        signIn.addEventListener('click', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                console.log("User signed in:", user.uid);
+
+                if (!user.emailVerified) {
+                    document.getElementById('signinForm').style.display = 'none';
+                    document.getElementById('verificationStep').style.display = 'block';
+                    return;
+                }
+                
+                await completeSignIn(user);
+            } catch (error) {
+                console.error("Error during sign in:", error);
+                const errorCode = error.code;
+                if (errorCode === 'auth/invalid-credential') {
+                    showMessage('Incorrect Email or Password', 'signInMessage', true);
+                } else {
+                    showMessage('Account does not exist', 'signInMessage', true);
+                }
+            }
+        });
+
+        document.getElementById('checkVerification').addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (user) {
+                await user.reload();
+                if (user.emailVerified) {
+                    await completeSignIn(user);
+                } else {
+                    showMessage('Your email is not verified yet. Please check your inbox and click the verification link.', 'signInMessage', true);
+                }
+            } else {
+                showMessage('No user is currently signed in.', 'signInMessage', true);
+            }
+        });
+
+        async function completeSignIn(user) {
+            // Check if the user is an admin
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            const isAdmin = userDoc.data()?.isAdmin || false;
+
+            console.log("Is admin?", isAdmin);
+
+            showMessage('Login successful', 'signInMessage');
+            localStorage.setItem('loggedInUserId', user.uid);
+            
+            console.log("Redirecting to:", isAdmin ? '/admin/adminDashboard.html' : '/user/dashboard.html');
+            window.location.href = isAdmin ? '/admin/adminDashboard.html' : '/user/dashboard.html';
+        }
+
+        // UI toggle
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('container');
+
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+
+        function togglePasswordVisibility(inputId, toggleElement) {
+            const input = document.getElementById(inputId);
+            const icon = toggleElement.querySelector('.material-icons');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.textContent = "visibility";
+            } else {
+                input.type = "password";
+                icon.textContent = "visibility_off";
+            }
+        }
+
+        // Make togglePasswordVisibility function globally accessible
+        window.togglePasswordVisibility = togglePasswordVisibility;
+    </script>
+</body>
+</html>
