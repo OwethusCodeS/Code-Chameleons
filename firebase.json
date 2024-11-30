@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "CTFX landing page",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
