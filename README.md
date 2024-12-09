@@ -6,6 +6,9 @@ This project is a comprehensive web application that combines chat functionality
 Built using HTML, CSS, JavaScript, and Firebase, the application is designed to offer smooth user experiences with essential modern tools. This application was a demo
 for a real company and is not the final project but only a template, this was for a school project.
 
+
+Link:https://closingclients-6afd9.web.app/
+
 ---
 
 ## Features
@@ -46,7 +49,7 @@ for a real company and is not the final project but only a template, this was fo
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/OwethusCodeS/Code-Chameleons/tree/main
+   git clone https://github.com/OwethusCodeS/Code-Chameleons/tree/CTFX-Landing-Page
    cd project-name
    ```
 
